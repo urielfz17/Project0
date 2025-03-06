@@ -98,5 +98,19 @@ public class LoanDAO {
             stmt.executeUpdate();
         }
     }
+    public void updateLoan(Loan loan) throws SQLException {
+        String sql = "UPDATE loans SET amount = ?, loan_type = ? WHERE id_loan = ?";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setBigDecimal(1, loan.getAmount());
+            stmt.setString(2, loan.getLoanType());
+            stmt.setInt(3, loan.getIdLoan());
+
+            stmt.executeUpdate();
+        }
+    }
+
 }
 

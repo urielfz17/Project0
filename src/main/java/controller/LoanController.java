@@ -15,6 +15,7 @@ public class LoanController {
     public void registerRoutes(Javalin app) {
         app.get("/loans", AuthMiddleware.requireLogin(this::getLoans));
         app.get("/loans/{id_loan}", AuthMiddleware.requireLogin(this::getLoanById));
+        app.put("/loans/{id_loan}", AuthMiddleware.requireLogin(this::updateLoan));
 
         app.post("/loans", AuthMiddleware.requireLogin(this::createLoan));
 
@@ -40,6 +41,9 @@ public class LoanController {
 
     private void rejectLoan(Context ctx) {
         loanService.rejectLoan(ctx);
+    }
+    private void updateLoan(Context ctx) {
+        loanService.updateLoan(ctx);
     }
 }
 

@@ -13,10 +13,14 @@ public class UserController {
 
     public void registerRoutes(Javalin app) {
         app.get("/users/{id_user}", this::getUser);
+        app.put("/users/{id_user}", this::updateUser);
     }
 
     private void getUser(Context ctx) {
         userService.getUser(ctx);
+    }
+    private void updateUser(Context ctx) {
+        userService.updateUser(ctx);
     }
 }
 

@@ -8,7 +8,7 @@ import io.javalin.http.Context;
 
 import java.math.BigDecimal;
 import java.sql.SQLException;
-import java.util.List; // ✅ CORRECCIÓN: Importar List
+import java.util.List;
 import java.util.Objects;
 
 public class LoanService {
@@ -165,5 +165,62 @@ public class LoanService {
             ctx.status(500).result("Database error: " + e.getMessage());
         }
     }
+    public void updateLoan(Context ctx) {
+        User user = ctx.sessionAttribute("user");
+
+        if (user == null) {
+            ctx.status(401).result("Unauthorized: Please log in");
+            return;
+        }
+
+        String idParam = ctx.pathParam("id_loan");
+        int idLoan;
+
+        try {
+            idLoan = Integer.parseInt(idParam);
+        } catch (NumberFormatException e) {
+            ctx.status(400).result("Invalid loan ID format");
+            return;
+        }
+
+        try {
+            // 1️⃣ Obtener el préstamo desde la base de datos
+            Loan loan = loanDAO.getLoanById(idLoan);
+            if (loan == null) {
+                ctx.status(404).result("Loan not found");
+                return;
+            }
+
+            // 2️⃣ Verificar si el usuario es el dueño del préstamo
+            if (!"manager".equals(user.getRole()) && user.getIdUser() != loan.getIdUser()) {
+                ctx.status(403).result("Forbidden: You cannot update this loan");
+                return;
+            }
+
+            // 3️⃣ Obtener los datos del body
+            LoanRequest loanRequest = ctx.bodyAsClass(LoanRequest.class);
+
+            // 4️⃣ Validar y actualizar los campos permitidos
+            if (loanRequest.getAmount() != null && loanRequest.getAmount().compareTo(BigDecimal.ZERO) > 0) {
+                loan.setAmount(loanRequest.getAmount());
+            } else if (loanRequest.getAmount() != null) {
+                ctx.status(400).result("Invalid loan amount");
+                return;
+            }
+
+            if (loanRequest.getLoanType() != null && !loanRequest.getLoanType().trim().isEmpty()) {
+                loan.setLoanType(loanRequest.getLoanType());
+            }
+
+            // 5️⃣ Guardar los cambios en la base de datos
+            loanDAO.updateLoan(loan);
+            ctx.status(200).result("Loan updated successfully");
+        } catch (SQLException e) {
+            ctx.status(500).result("Database error: " + e.getMessage());
+        } catch (Exception e) {
+            ctx.status(400).result("Invalid request format: " + e.getMessage());
+        }
+    }
+
 
 }

@@ -11,7 +11,7 @@ public class AuthMiddleware {
             if (user == null) {
                 ctx.status(401).result("Unauthorized: Please log in");
             } else {
-                handler.handle(ctx); // ✅ CORRECCIÓN: Javalin 5+ requiere `handler.handle(ctx)`
+                handler.handle(ctx);
             }
         };
     }
@@ -22,7 +22,7 @@ public class AuthMiddleware {
             if (user == null || !"manager".equals(user.getRole())) {
                 ctx.status(403).result("Forbidden: Only managers can access this resource");
             } else {
-                handler.handle(ctx); // ✅ CORRECCIÓN
+                handler.handle(ctx);
             }
         };
     }
