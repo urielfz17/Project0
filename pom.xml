@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>net.revature</groupId>
+    <artifactId>Project0</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <properties>
+        <maven.compiler.source>17</maven.compiler.source>
+        <maven.compiler.target>17</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javalin.version>6.4.0</javalin.version>
+        <postgresql.version>42.7.5</postgresql.version>
+        <logback.version>1.5.6</logback.version>  <!-- Versión estable sin problemas -->
+        <slf4j.version>2.0.9</slf4j.version>
+        <junit.version>5.12.0</junit.version>
+        <mockito.version>5.16.0</mockito.version>
+        <maven.compiler.plugin.version>3.11.0</maven.compiler.plugin.version>
+        <exec.maven.plugin.version>3.1.0</exec.maven.plugin.version>
+    </properties>
+
+    <dependencies>
+        <!-- Javalin (para API REST) -->
+        <dependency>
+            <groupId>io.javalin</groupId>
+            <artifactId>javalin</artifactId>
+            <version>${javalin.version}</version>
+        </dependency>
+
+        <!-- PostgreSQL JDBC Driver -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
+            <version>${postgresql.version}</version>
+        </dependency>
+
+        <!-- SLF4J + Logback (Logging) -->
+        <dependency>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>${logback.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>${slf4j.version}</version>
+        </dependency>
+
+        <!-- JUnit 5 (Testing) -->
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!-- Mockito (Mocking para pruebas) -->
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-core</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mockito</groupId>
+            <artifactId>mockito-junit-jupiter</artifactId>
+            <version>${mockito.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.mindrot</groupId>
+            <artifactId>jbcrypt</artifactId>
+            <version>0.4</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.15.2</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <!-- Plugin para compilar con Java 17 -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${maven.compiler.plugin.version}</version>
+                <configuration>
+                    <source>${maven.compiler.source}</source>
+                    <target>${maven.compiler.target}</target>
+                </configuration>
+            </plugin>
+
+            <!-- Plugin para ejecutar la aplicación -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>${exec.maven.plugin.version}</version>
+                <configuration>
+                    <mainClass>net.revature.Main</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+
+</project>
