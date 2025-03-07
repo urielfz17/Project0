@@ -15,7 +15,6 @@ public class UserService {
     }
 
     public void getUser(Context ctx) {
-        // Obtener el ID del usuario desde la URL
         String idParam = ctx.pathParam("id_user");
         int idUser;
 
@@ -47,17 +46,14 @@ public class UserService {
         }
 
         try {
-            // 1️⃣ Leer JSON desde el body y convertirlo en UserRequest
             UserRequest userRequest = ctx.bodyAsClass(UserRequest.class);
 
-            // 2️⃣ Obtener usuario desde la base de datos
             User user = userDAO.getUserById(sessionUser.getIdUser());
             if (user == null) {
                 ctx.status(404).result("User not found");
                 return;
             }
 
-            // 3️⃣ Actualizar solo los campos enviados en el JSON
             if (userRequest.getUsername() != null && !userRequest.getUsername().trim().isEmpty()) {
                 user.setUsername(userRequest.getUsername());
             }
@@ -69,7 +65,6 @@ public class UserService {
                 return;
             }
 
-            // 4️⃣ Si se envía un nuevo `role`, solo los managers pueden modificarlo
             if (userRequest.getRole() != null) {
                 if (!"manager".equals(sessionUser.getRole())) {
                     ctx.status(403).result("Forbidden: Only managers can change roles");
@@ -78,7 +73,6 @@ public class UserService {
                 user.setRole(userRequest.getRole());
             }
 
-            // 5️⃣ Guardar cambios en la base de datos
             userDAO.updateUser(user);
             ctx.status(200).result("User updated successfully");
         } catch (Exception e) {

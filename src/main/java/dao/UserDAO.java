@@ -34,9 +34,7 @@ public class UserDAO {
         }
         return null;
     }
-    /**
-     * Obtiene un usuario por su ID.
-     */
+
     public User getUserById(int idUser) throws SQLException {
         String sql = "SELECT id_user, username, role FROM users WHERE id_user = ?";
 
@@ -58,9 +56,7 @@ public class UserDAO {
         return null;
     }
 
-    /**
-     * Actualiza los datos de un usuario.
-     */
+
     public boolean updateUser(User user) throws SQLException {
         String sql = "UPDATE users SET username = ?, password_hash = ?, role = ? WHERE id_user = ?";
 
@@ -77,9 +73,7 @@ public class UserDAO {
         }
     }
 
-    /**
-     * Elimina un usuario de la base de datos.
-     */
+
     public boolean deleteUser(int idUser) throws SQLException {
         String sql = "DELETE FROM users WHERE id_user = ?";
 
